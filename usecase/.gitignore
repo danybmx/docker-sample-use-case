@@ -1,0 +1,10 @@
+.DS_Store
+.gradle
+node_modules
+gradle/
+.idea
+bin/
+out/
+build/
+.settings
+.vscode

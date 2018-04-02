@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="hero is-small has-text-centered">
+    <div class="hero-body">
+        <h1 class="title">
+            Welcome to the VigoJUG!
+        </h1>
+        <img class="logo" alt="VigoJUG" src="/web/assets/logo.png">
+    </div>
+  </div>
+
+  <section class="content">
+      <div class="has-text-centered">
+          <button (click)="getGreeting()" [disabled]="auto" class="button is-success is-large">Get a greeting from the API</button>
+          <button (click)="toggleAuto()" [ngClass]="{'is-primary': !auto, 'is-warning': auto}" class="button is-primary is-large">
+            <span *ngIf="!auto">Start auto fetch</span>
+            <span *ngIf="auto">Stop auto fetch</span>
+          </button>
+      </div>
+      <table class="table is-fullwidth">
+        <thead>
+          <tr>
+            <th *ngFor="let server of getServers()">{{ server }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td *ngFor="let server of getServers()">{{ getGreetingsFromServer(server).length }}</td>
+          </tr>
+        </tbody>
+      </table>
+  </section>
+</div>
+

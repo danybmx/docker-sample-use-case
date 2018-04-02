@@ -1,0 +1,29 @@
+# Base image for use as the builder
+FROM openjdk:9-jdk as java-builder
+
+WORKDIR /jlink/outputdir
+
+# Run the jlink tool to generate the custom jre
+RUN jlink --module-path /docker-java-home/jmods --strip-debug \
+    --compress=2 --output java --add-modules java.base
+
+# Base image for the custom jre
+# This is the same that the one that openjdk:8-jre use
+FROM buildpack-deps:stretch-curl
+
+# Copy custom jre built
+WORKDIR "/jre/"
+COPY --from=java-builder /jlink/outputdir .
+
+# Copy the class
+COPY bin/MainApplication.class /app/MainApplication.class
+
+ENV PATH /jre/java/bin:$PATH
+
+# Define the working directory
+WORKDIR "/app/"
+
+# Define command to run
+ENTRYPOINT ["java"]
+CMD ["MainApplication"]
+

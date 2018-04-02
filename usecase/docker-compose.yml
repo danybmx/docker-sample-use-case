@@ -1,0 +1,26 @@
+version: "2"
+services:
+  api:
+    image: 'org.vigojug/api:latest'
+    ports:
+      - 8080
+    environment:
+      VIRTUAL_HOST: "*/api*"
+  app:
+    image: 'org.vigojug/app:latest'
+    ports:
+      - 8080
+    environment:
+      VIRTUAL_HOST: "*/web*"
+  load_balancer:
+    image: 'dockercloud/haproxy:latest'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - BALANCE=roundrobin
+    links:
+      - app
+      - api
+    ports:
+      - 80:80
+      - 1936:1936
